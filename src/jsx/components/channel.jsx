@@ -9,7 +9,7 @@ class Channel extends Component {
 
     render() {
         return (
-            <div className={this.props.state + " channel col-md-3"}>
+            <div className={this.props.state + " channel col-sm-4 col-lg-3 "}>
                 <a href={this.props.url}>
                 <div className="inner-container">
                     <img src={this.props.logo} alt="logo image"/>

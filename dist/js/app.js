@@ -31557,6 +31557,8 @@
 
 	        var _this = _possibleConstructorReturn(this, (Layout.__proto__ || Object.getPrototypeOf(Layout)).call(this));
 
+	        _this.defaultLogo = "http://s.jtvnw.net/jtv_user_pictures/hosted_images/GlitchIcon_purple.png";
+
 	        _this.state = {
 	            navigationState: "All",
 	            allState: "active",
@@ -31576,7 +31578,8 @@
 	                        this.setState({
 	                            allState: "active",
 	                            onlineState: "",
-	                            offlineState: ""
+	                            offlineState: "",
+	                            closedState: ""
 	                        });
 
 	                        (0, _jquery2.default)(".online").show();
@@ -31590,7 +31593,8 @@
 	                        this.setState({
 	                            allState: "",
 	                            onlineState: "active",
-	                            offlineState: ""
+	                            offlineState: "",
+	                            closedState: ""
 	                        });
 
 	                        (0, _jquery2.default)(".online").show();
@@ -31604,7 +31608,8 @@
 	                        this.setState({
 	                            allState: "",
 	                            onlineState: "",
-	                            offlineState: "active"
+	                            offlineState: "active",
+	                            closedState: ""
 	                        });
 
 	                        (0, _jquery2.default)(".online").hide();
@@ -31618,7 +31623,8 @@
 	                        this.setState({
 	                            allState: "",
 	                            onlineState: "",
-	                            offlineState: "active"
+	                            offlineState: "",
+	                            closedState: "active"
 	                        });
 
 	                        (0, _jquery2.default)(".online").hide();
@@ -31636,7 +31642,8 @@
 	                null,
 	                _react2.default.createElement(
 	                    "div",
-	                    { className: "header" },
+	                    { className: "header text-center" },
+	                    _react2.default.createElement("img", { src: this.defaultLogo, alt: "Twitch.tv logo" }),
 	                    _react2.default.createElement(
 	                        "h1",
 	                        { className: "text-center" },
@@ -31897,7 +31904,7 @@
 	        value: function render() {
 	            return _react2.default.createElement(
 	                "div",
-	                { className: this.props.state + " channel col-md-3" },
+	                { className: this.props.state + " channel col-sm-4 col-lg-3 " },
 	                _react2.default.createElement(
 	                    "a",
 	                    { href: this.props.url },
