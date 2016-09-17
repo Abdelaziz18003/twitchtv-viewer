@@ -31577,6 +31577,10 @@
 	                            onlineState: "",
 	                            offlineState: ""
 	                        });
+
+	                        (0, _jquery2.default)(".online").show();
+	                        (0, _jquery2.default)(".offline").show();
+	                        (0, _jquery2.default)(".closed").show();
 	                        break;
 	                    }
 
@@ -31587,6 +31591,10 @@
 	                            onlineState: "active",
 	                            offlineState: ""
 	                        });
+
+	                        (0, _jquery2.default)(".online").show();
+	                        (0, _jquery2.default)(".offline").hide();
+	                        (0, _jquery2.default)(".closed").hide();
 	                        break;
 	                    }
 
@@ -31597,6 +31605,10 @@
 	                            onlineState: "",
 	                            offlineState: "active"
 	                        });
+
+	                        (0, _jquery2.default)(".online").hide();
+	                        (0, _jquery2.default)(".offline").show();
+	                        (0, _jquery2.default)(".closed").hide();
 	                        break;
 	                    }
 	            }

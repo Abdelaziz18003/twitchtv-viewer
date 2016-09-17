@@ -22,6 +22,10 @@ class Layout extends Component {
                     onlineState: "",
                     offlineState: ""
                 });
+
+                $(".online").show();
+                $(".offline").show();
+                $(".closed").show();
                 break;
             }
 
@@ -31,6 +35,10 @@ class Layout extends Component {
                     onlineState: "active",
                     offlineState: ""
                 });
+
+                $(".online").show();
+                $(".offline").hide();
+                $(".closed").hide();
                 break;
             }
 
@@ -40,6 +48,10 @@ class Layout extends Component {
                     onlineState: "",
                     offlineState: "active"
                 });
+
+                $(".online").hide();
+                $(".offline").show();
+                $(".closed").hide();
                 break;
             }
         }
