@@ -9,94 +9,90 @@ class ChannelsBox extends Component {
     constructor() {
         super();
 
-        this.apiLink = "https://api.twitch.tv/kraken/";
+        this.apiLink = "https://api.twitch.tv/kraken/streams";
+        this.clientId = "c7o7b0odmvym6yi5x3hxp16ecdvrjt3";
+        this.defaultLogo = "http://s.jtvnw.net/jtv_user_pictures/hosted_images/GlitchIcon_purple.png";
 
         //list of channels to look for
         this.streamers = ["freecodecamp", "storbeck", "terakilobyte", "habathcx","RobotCaleb","thomasballinger","noobs2ninjas","beohoff","brunofin","comster404","test_channel","cretetion","sheevergaming","TR7K","OgamingSC2","ESL_SC2"];
 
         //this is the list of streams and channels details got from twitch API
         this.state = {
-            channelsDetails: [],
             streamsDetails: []
         };
+    }
+
+    //execute this when the component renders for the first time
+    componentDidMount() {
+        this._handleClick();
     }
 
     //methode that handle click event
     _handleClick() {
         this.streamers.map((streamer, index) => {
-            this._getDetails("channels", streamer, this._updateState.bind(this));
-            this._getDetails("streams", streamer, this._updateState.bind(this));
+            this._getDetails(streamer, this._updateState.bind(this));
         })
     }
 
     //methode used to fetch json data about a given channel 
-    _getDetails(type, channelName, callback) {
+    _getDetails(streamer, callback) {
         $.ajax({
-            url: this.apiLink + type + "/" + channelName,
+            url: this.apiLink + "/" + streamer + "?client_id=" + this.clientId,
             dataType: "jsonp",
             success: function(response) {
-                callback(type, response);
+                callback(response);
             }
         })
     }
 
     //methode used to update the state according to the ajax response
-    _updateState(type, response) {
+    _updateState(response) {
         
-        //update the ""streamsDetails" state if type is "streams"
-        if (type === "streams") {
+        let buffer = this.state.streamsDetails;
+        buffer.push(response)
 
-            let buffer = this.state.streamsDetails;
-            buffer.push(response);
-
-            this.setState({
-                streamsDetails: buffer
-            })
-        
-        //update the ""channelsDetails" state if type is "channels"
-        } else if (type === "channels") {
-            
-            let buffer = this.state.channelsDetails;
-            buffer.push(response);
-
-            this.setState({
-                channelsDetails: buffer
-            });
-        }
+        this.setState({
+            streamsDetails: buffer
+        });
     }
 
+    //make channel components from streams state
     _makeChannelsComponents() {
         
         //return an array of <Channel /> components
         return this.state.streamsDetails.map((streamsItem, index) => {
 
             let streamingState = streamsItem.stream ? "online" : "offline",
-                channel = streamsItem.stream ? streamsItem.stream.channel : 
-                    this.state.channelsDetails[index],
-                
-                // set title and description only when the channel is online
-                title = streamingState === "online" ? channel.game : "",
+                channel = streamsItem.stream ? streamsItem.stream.channel : null,
+                logoUrl = channel ? channel.logo : this.defaultLogo;
+
+            // set title and description only when the channel is online
+            let title = streamingState === "online" ? channel.game : "",
                 description = streamingState === "online" ? channel.status : "";
 
-                if(streamsItem.stream === undefined) {
-                    return <Channel state="closed" url="/" name={this.streamers[index]} title="Account closed" />
-                }
+            // when the channel is offline
+            if (streamsItem.stream === null) {
+
+                let startIndex = this.apiLink.length + 1;
+
+                let channelName = streamsItem._links.self.substr(startIndex);
+                
+                return <Channel state={streamingState} url={"https://twitch.tv/" + channelName} logo={logoUrl} name={channelName}/>
+            }
+
+            //when the channel is closed
+            if(streamsItem.stream === undefined) {
+                return <Channel state="closed" url="/" name={this.streamers[index]} title="Account closed" logo={logoUrl}/>
+            }
             
-            return <Channel state={streamingState} url={channel.url} logo={channel.logo} name=      {channel.display_name} title={title} description={description} />
+            return <Channel state={streamingState} url={channel.url} logo={channel.logo} name={channel.display_name} title={title} description={description} />
         })
     }
 
     //render the component to the DOM
     render() {
         return (
-            <div>
-                <ul>
-                    <li>all</li>
-                    <li>online</li>
-                    <li>offline</li>
-                    <button onClick={this._handleClick.bind(this)}>get streams</button>
-                </ul>
-
+            <div className="channel-box container">
                 {this._makeChannelsComponents()}
             </div>
         );

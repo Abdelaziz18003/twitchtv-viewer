@@ -31537,6 +31537,10 @@
 
 	var _channelsBox2 = _interopRequireDefault(_channelsBox);
 
+	var _jquery = __webpack_require__(1);
+
+	var _jquery2 = _interopRequireDefault(_jquery);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -31551,19 +31555,101 @@
 	    function Layout() {
 	        _classCallCheck(this, Layout);
 
-	        return _possibleConstructorReturn(this, (Layout.__proto__ || Object.getPrototypeOf(Layout)).apply(this, arguments));
+	        var _this = _possibleConstructorReturn(this, (Layout.__proto__ || Object.getPrototypeOf(Layout)).call(this));
+
+	        _this.state = {
+	            navigationState: "All",
+	            allState: "active",
+	            onlineState: "",
+	            offlineState: ""
+	        };
+	        return _this;
 	    }
 
 	    _createClass(Layout, [{
+	        key: "_navigateTo",
+	        value: function _navigateTo(state) {
+	            switch (state) {
+	                case "all":
+	                    {
+	                        this.setState({
+	                            allState: "active",
+	                            onlineState: "",
+	                            offlineState: ""
+	                        });
+	                        break;
+	                    }
+
+	                case "online":
+	                    {
+	                        this.setState({
+	                            allState: "",
+	                            onlineState: "active",
+	                            offlineState: ""
+	                        });
+	                        break;
+	                    }
+
+	                case "offline":
+	                    {
+	                        this.setState({
+	                            allState: "",
+	                            onlineState: "",
+	                            offlineState: "active"
+	                        });
+	                        break;
+	                    }
+	            }
+	        }
+	    }, {
 	        key: "render",
 	        value: function render() {
 	            return _react2.default.createElement(
 	                "div",
 	                null,
 	                _react2.default.createElement(
-	                    "h1",
-	                    null,
-	                    "layout"
+	                    "div",
+	                    { className: "header" },
+	                    _react2.default.createElement(
+	                        "h1",
+	                        { className: "text-center" },
+	                        "Twitch.tv Viewer"
+	                    ),
+	                    _react2.default.createElement(
+	                        "div",
+	                        { className: "container" },
+	                        _react2.default.createElement(
+	                            "ul",
+	                            { className: "nav nav-tabs nav-justified" },
+	                            _react2.default.createElement(
+	                                "li",
+	                                { role: "presentation", className: this.state.allState, onClick: this._navigateTo.bind(this, "all") },
+	                                _react2.default.createElement(
+	                                    "a",
+	                                    { href: "#" },
+	                                    "All"
+	                                )
+	                            ),
+	                            _react2.default.createElement(
+	                                "li",
+	                                { role: "presentation", className: this.state.onlineState, onClick: this._navigateTo.bind(this, "online") },
+	                                _react2.default.createElement(
+	                                    "a",
+	                                    { href: "#" },
+	                                    "Online"
+	                                )
+	                            ),
+	                            _react2.default.createElement(
+	                                "li",
+	                                { role: "presentation", className: this.state.offlineState, onClick: this._navigateTo.bind(this, "offline") },
+	                                _react2.default.createElement(
+	                                    "a",
+	                                    { href: "#" },
+	                                    "Offline"
+	                                )
+	                            )
+	                        )
+	                    )
 	                ),
 	                _react2.default.createElement(_channelsBox2.default, null)
 	            );
@@ -31616,30 +31702,38 @@
 
 	        var _this = _possibleConstructorReturn(this, (ChannelsBox.__proto__ || Object.getPrototypeOf(ChannelsBox)).call(this));
 
-	        _this.apiLink = "https://api.twitch.tv/kraken/";
+	        _this.apiLink = "https://api.twitch.tv/kraken/streams";
+	        _this.clientId = "c7o7b0odmvym6yi5x3hxp16ecdvrjt3";
+	        _this.defaultLogo = "http://s.jtvnw.net/jtv_user_pictures/hosted_images/GlitchIcon_purple.png";
 
 	        //list of channels to look for
 	        _this.streamers = ["freecodecamp", "storbeck", "terakilobyte", "habathcx", "RobotCaleb", "thomasballinger", "noobs2ninjas", "beohoff", "brunofin", "comster404", "test_channel", "cretetion", "sheevergaming", "TR7K", "OgamingSC2", "ESL_SC2"];
 
 	        //this is the list of streams and channels details got from twitch API
 	        _this.state = {
-	            channelsDetails: [],
 	            streamsDetails: []
 	        };
 	        return _this;
 	    }
 
-	    //methode that handle click event
+	    //execute this when the component renders for the first time
 
 
 	    _createClass(ChannelsBox, [{
+	        key: "componentDidMount",
+	        value: function componentDidMount() {
+	            this._handleClick();
+	        }
+
+	        //methode that handle click event
+
+	    }, {
 	        key: "_handleClick",
 	        value: function _handleClick() {
 	            var _this2 = this;
 
 	            this.streamers.map(function (streamer, index) {
-	                _this2._getDetails("channels", streamer, _this2._updateState.bind(_this2));
-	                _this2._getDetails("streams", streamer, _this2._updateState.bind(_this2));
+	                _this2._getDetails(streamer, _this2._updateState.bind(_this2));
 	            });
 	        }
 
@@ -31647,12 +31741,12 @@
 
 	    }, {
 	        key: "_getDetails",
-	        value: function _getDetails(type, channelName, callback) {
+	        value: function _getDetails(streamer, callback) {
 	            _jquery2.default.ajax({
-	                url: this.apiLink + type + "/" + channelName,
+	                url: this.apiLink + "/" + streamer + "?client_id=" + this.clientId,
 	                dataType: "jsonp",
 	                success: function success(response) {
-	                    callback(type, response);
+	                    callback(response);
 	                }
 	            });
 	        }
@@ -31661,29 +31755,18 @@
 
 	    }, {
 	        key: "_updateState",
-	        value: function _updateState(type, response) {
+	        value: function _updateState(response) {
 
-	            //update the ""streamsDetails" state if type is "streams"
-	            if (type === "streams") {
+	            var buffer = this.state.streamsDetails;
+	            buffer.push(response);
 
-	                var buffer = this.state.streamsDetails;
-	                buffer.push(response);
-
-	                this.setState({
-	                    streamsDetails: buffer
-	                });
-
-	                //update the ""channelsDetails" state if type is "channels"
-	            } else if (type === "channels") {
-
-	                var _buffer = this.state.channelsDetails;
-	                _buffer.push(response);
-
-	                this.setState({
-	                    channelsDetails: _buffer
-	                });
-	            }
+	            this.setState({
+	                streamsDetails: buffer
+	            });
 	        }
+
+	        //make channel components from streams state
+
 	    }, {
 	        key: "_makeChannelsComponents",
 	        value: function _makeChannelsComponents() {
@@ -31693,15 +31776,26 @@
 	            return this.state.streamsDetails.map(function (streamsItem, index) {
 
 	                var streamingState = streamsItem.stream ? "online" : "offline",
-	                    channel = streamsItem.stream ? streamsItem.stream.channel : _this3.state.channelsDetails[index],
-
+	                    channel = streamsItem.stream ? streamsItem.stream.channel : null,
+	                    logoUrl = channel ? channel.logo : _this3.defaultLogo;
 
 	                // set title and description only when the channel is online
-	                title = streamingState === "online" ? channel.game : "",
+	                var title = streamingState === "online" ? channel.game : "",
 	                    description = streamingState === "online" ? channel.status : "";
 
+	                // when the channel is offline
+	                if (streamsItem.stream === null) {
+
+	                    var startIndex = _this3.apiLink.length + 1;
+
+	                    var channelName = streamsItem._links.self.substr(startIndex);
+
+	                    return _react2.default.createElement(_channel2.default, { state: streamingState, url: "https://twitch.tv/" + channelName, logo: logoUrl, name: channelName });
+	                }
+
+	                //when the channel is closed
 	                if (streamsItem.stream === undefined) {
-	                    return _react2.default.createElement(_channel2.default, { state: "closed", url: "/", name: _this3.streamers[index], title: "Account closed" });
+	                    return _react2.default.createElement(_channel2.default, { state: "closed", url: "/", name: _this3.streamers[index], title: "Account closed", logo: logoUrl });
 	                }
 
 	                return _react2.default.createElement(_channel2.default, { state: streamingState, url: channel.url, logo: channel.logo, name: channel.display_name, title: title, description: description });
@@ -31715,31 +31809,7 @@
 	        value: function render() {
 	            return _react2.default.createElement(
 	                "div",
-	                null,
-	                _react2.default.createElement(
-	                    "ul",
-	                    null,
-	                    _react2.default.createElement(
-	                        "li",
-	                        null,
-	                        "all"
-	                    ),
-	                    _react2.default.createElement(
-	                        "li",
-	                        null,
-	                        "online"
-	                    ),
-	                    _react2.default.createElement(
-	                        "li",
-	                        null,
-	                        "offline"
-	                    ),
-	                    _react2.default.createElement(
-	                        "button",
-	                        { onClick: this._handleClick.bind(this) },
-	                        "get streams"
-	                    )
-	                ),
+	                { className: "channel-box container" },
 	                this._makeChannelsComponents()
 	            );
 	        }
@@ -31791,28 +31861,34 @@
 	        value: function render() {
 	            return _react2.default.createElement(
 	                "div",
-	                null,
+	                { className: this.props.state + " channel col-md-3" },
 	                _react2.default.createElement(
 	                    "a",
 	                    { href: this.props.url },
-	                    _react2.default.createElement("img", { src: this.props.logo, alt: "logo image" }),
 	                    _react2.default.createElement(
-	                        "h3",
-	                        null,
-	                        this.props.name,
-	                        " (",
-	                        this.props.state,
-	                        ")"
-	                    ),
-	                    _react2.default.createElement(
-	                        "p",
-	                        null,
-	                        this.props.title
-	                    ),
-	                    _react2.default.createElement(
-	                        "p",
-	                        null,
-	                        this.props.description
+	                        "div",
+	                        { className: "inner-container" },
+	                        _react2.default.createElement("img", { src: this.props.logo, alt: "logo image" }),
+	                        _react2.default.createElement(
+	                            "h3",
+	                            { className: "name" },
+	                            this.props.name
+	                        ),
+	                        _react2.default.createElement(
+	                            "p",
+	                            { className: "title" },
+	                            this.props.title
+	                        ),
+	                        _react2.default.createElement(
+	                            "p",
+	                            { className: "description" },
+	                            this.props.description
+	                        ),
+	                        _react2.default.createElement(
+	                            "h3",
+	                            { className: "state" },
+	                            this.props.state
+	                        )
 	                    )
 	                )
 	            );
