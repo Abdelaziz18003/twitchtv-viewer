@@ -6,6 +6,9 @@ class Layout extends Component {
 
     constructor() {
         super();
+
+        this.defaultLogo = "http://s.jtvnw.net/jtv_user_pictures/hosted_images/GlitchIcon_purple.png";
+
         this.state = {
             navigationState: "All",
             allState: "active",
@@ -21,7 +24,8 @@ class Layout extends Component {
                 this.setState({
                     allState: "active",
                     onlineState: "",
-                    offlineState: ""
+                    offlineState: "",
+                    closedState: ""
                 });
 
                 $(".online").show();
@@ -34,7 +38,8 @@ class Layout extends Component {
                 this.setState({
                     allState: "",
                     onlineState: "active",
-                    offlineState: ""
+                    offlineState: "",
+                    closedState: ""
                 });
 
                 $(".online").show();
@@ -47,7 +52,8 @@ class Layout extends Component {
                 this.setState({
                     allState: "",
                     onlineState: "",
-                    offlineState: "active"
+                    offlineState: "active",
+                    closedState: ""
                 });
 
                 $(".online").hide();
@@ -60,7 +66,8 @@ class Layout extends Component {
                 this.setState({
                     allState: "",
                     onlineState: "",
-                    offlineState: "active"
+                    offlineState: "",
+                    closedState: "active"
                 });
 
                 $(".online").hide();
@@ -74,7 +81,8 @@ class Layout extends Component {
     render() {
         return (
             <div>
-                <div className="header">
+                <div className="header text-center">
+                <img src={this.defaultLogo} alt="Twitch.tv logo"/>
                     <h1 className="text-center">Twitch.tv Viewer</h1>
                     <div className="container">
                         <ul className="nav nav-tabs nav-justified">
