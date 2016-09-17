@@ -31561,7 +31561,8 @@
 	            navigationState: "All",
 	            allState: "active",
 	            onlineState: "",
-	            offlineState: ""
+	            offlineState: "",
+	            closedState: ""
 	        };
 	        return _this;
 	    }
@@ -31611,6 +31612,20 @@
 	                        (0, _jquery2.default)(".closed").hide();
 	                        break;
 	                    }
+
+	                case "closed":
+	                    {
+	                        this.setState({
+	                            allState: "",
+	                            onlineState: "",
+	                            offlineState: "active"
+	                        });
+
+	                        (0, _jquery2.default)(".online").hide();
+	                        (0, _jquery2.default)(".offline").hide();
+	                        (0, _jquery2.default)(".closed").show();
+	                        break;
+	                    }
 	            }
 	        }
 	    }, {
@@ -31658,6 +31673,15 @@
 	                                    "a",
 	                                    { href: "#" },
 	                                    "Offline"
+	                                )
+	                            ),
+	                            _react2.default.createElement(
+	                                "li",
+	                                { role: "presentation", className: this.state.closedState, onClick: this._navigateTo.bind(this, "closed") },
+	                                _react2.default.createElement(
+	                                    "a",
+	                                    { href: "#" },
+	                                    "closed"
 	                                )
 	                            )
 	                        )

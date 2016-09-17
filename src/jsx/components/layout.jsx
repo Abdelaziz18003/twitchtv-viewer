@@ -10,7 +10,8 @@ class Layout extends Component {
             navigationState: "All",
             allState: "active",
             onlineState: "",
-            offlineState: ""
+            offlineState: "",
+            closedState: ""
         }
     }
 
@@ -54,6 +55,19 @@ class Layout extends Component {
                 $(".closed").hide();
                 break;
             }
+
+            case "closed": {
+                this.setState({
+                    allState: "",
+                    onlineState: "",
+                    offlineState: "active"
+                });
+
+                $(".online").hide();
+                $(".offline").hide();
+                $(".closed").show();
+                break;
+            }
         }
     }
 
@@ -64,15 +78,23 @@ class Layout extends Component {
                     <h1 className="text-center">Twitch.tv Viewer</h1>
                     <div className="container">
                         <ul className="nav nav-tabs nav-justified">
+
                             <li role="presentation" className={this.state.allState} onClick={this._navigateTo.bind(this, "all")} >
                                 <a href="#">All</a>
                             </li>
+
                             <li role="presentation" className={this.state.onlineState} onClick={this._navigateTo.bind(this, "online")} >
                                 <a href="#">Online</a>
                             </li>
+
                             <li role="presentation" className={this.state.offlineState} onClick={this._navigateTo.bind(this, "offline")} >
                                 <a href="#">Offline</a>
                             </li> 
+
+                            <li role="presentation" className={this.state.closedState} onClick={this._navigateTo.bind(this, "closed")} >
+                                <a href="#">closed</a>
+                            </li> 
+
                         </ul>
                     </div>
                 </div>
