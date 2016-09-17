@@ -1,0 +1,43 @@
+.header {
+  background-color: #6441A5;
+  color: white;
+  padding: 30px 0px 0px; }
+  .header h1 {
+    margin: 0px 0px 20px; }
+  .header a {
+    color: inherit; }
+
+.channel {
+  height: 320px;
+  margin: 20px 0px 0px;
+  text-align: center; }
+  .channel a,
+  .channel a:hover,
+  .channel a:active {
+    text-decoration: none; }
+  .channel .inner-container {
+    border: 1px solid black;
+    height: 100%;
+    padding: 20px 10px 0px;
+    position: relative; }
+  .channel img {
+    border-radius: 50%;
+    height: 75px;
+    width: 75px; }
+  .channel .state {
+    color: white;
+    display: block;
+    margin: 0px;
+    padding: 5px;
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    width: 100%; }
+  .channel.offline .state {
+    background-color: red; }
+  .channel.online .state {
+    background-color: green; }
+  .channel.closed .state {
+    background-color: grey; }
+
+/*# sourceMappingURL=main.css.map */
